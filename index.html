@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratorio Educativo de Ciberseguridad</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#070b10;color:#e5e7eb;font-family:Arial,sans-serif}
+.wrap{max-width:760px;margin:auto;padding:22px}
+.card{background:#111827;border:1px solid #334155;border-radius:18px;padding:25px}
+h1{color:#4ade80}
+.badge{display:inline-block;padding:6px 10px;border-radius:20px;background:#052e16;color:#4ade80;font-size:13px}
+p,li{line-height:1.6;color:#cbd5e1}
+button,label{display:inline-block;background:#16a34a;color:#fff;padding:13px 18px;border-radius:10px;font-weight:bold;cursor:pointer;border:0}
+input{display:none}
+#preview{display:none;width:100%;max-height:420px;object-fit:contain;margin-top:18px;border-radius:12px;background:#020617}
+.console{background:#020617;border-radius:12px;padding:15px;color:#86efac;font-family:monospace;margin:20px 0}
+.note{border-left:4px solid #facc15;background:#1e293b;padding:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<span class="badge">LABORATORIO EDUCATIVO</span>
+<h1>🔐 Simulación de acceso a una galería</h1>
+
+<p>
+Esta página sirve para aprender cómo funciona el acceso autorizado a fotografías desde un navegador.
+No obtiene fotografías automáticamente ni puede acceder silenciosamente a toda la galería.
+</p>
+
+<div class="console" id="console">
+&gt; Sistema iniciado...<br>
+&gt; Esperando autorización del usuario...
+</div>
+
+<label for="foto">📷 Seleccionar una foto de mi galería</label>
+<input id="foto" type="file" accept="image/*">
+
+<img id="preview" alt="Vista previa de la fotografía seleccionada">
+
+<p id="estado">Todavía no has seleccionado ninguna fotografía.</p>
+
+<div class="note">
+<strong>🔒 Seguridad:</strong><br>
+La imagen seleccionada solamente se muestra en este navegador.
+Este laboratorio no sube ni envía la fotografía a ningún servidor.
+</div>
+
+<h2>¿Qué estás aprendiendo?</h2>
+<ul>
+<li>Un enlace puede abrir una página web.</li>
+<li>El navegador no entrega automáticamente toda la galería a una página.</li>
+<li>El usuario debe realizar una acción explícita para seleccionar un archivo.</li>
+<li>Los permisos y selectores de archivos son mecanismos importantes de seguridad.</li>
+</ul>
+
+<h2>Prueba</h2>
+<p>Selecciona una fotografía de prueba y observa qué ocurre.</p>
+</div>
+</div>
+
+<script>
+const input=document.getElementById("foto");
+const preview=document.getElementById("preview");
+const estado=document.getElementById("estado");
+const consola=document.getElementById("console");
+
+input.addEventListener("change",function(){
+ const file=this.files[0];
+ if(!file){
+   estado.textContent="No se seleccionó ningún archivo.";
+   return;
+ }
+ if(!file.type.startsWith("image/")){
+   estado.textContent="Selecciona una imagen.";
+   preview.style.display="none";
+   return;
+ }
+ const url=URL.createObjectURL(file);
+ preview.src=url;
+ preview.style.display="block";
+ estado.textContent="Foto seleccionada: "+file.name;
+ consola.innerHTML += "<br>&gt; Usuario autorizó la selección de una fotografía.";
+});
+</script>
+</body>
+</html>
